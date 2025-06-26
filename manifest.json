@@ -1,0 +1,56 @@
+{
+  "display_information": {
+    "name": "Quotastic",
+    "description": "Sla de leukste quotes van je team op! (by Build To Sell B.V.)",
+    "background_color": "#FF6B6B",
+    "long_description": "Quotastic is een leuke Slack bot die het makkelijk maakt om grappige, inspirerende of bijzondere uitspraken van teamleden op te slaan en terug te halen. Perfect voor het vastleggen van die onvergetelijke momenten tijdens meetings, brainstorms of gewoon tussendoor!"
+  },
+  "features": {
+    "app_home": {
+      "home_tab_enabled": false,
+      "messages_tab_enabled": true,
+      "messages_tab_read_only_enabled": false
+    },
+    "bot_user": {
+      "display_name": "Quotastic",
+      "always_online": true
+    },
+    "slash_commands": [
+      {
+        "command": "/quote",
+        "description": "Beheer quotes van je team",
+        "usage_hint": "store [tekst] | random | list",
+        "should_escape": false
+      }
+    ]
+  },
+  "oauth_config": {
+    "scopes": {
+      "bot": [
+        "channels:history",
+        "channels:read",
+        "chat:write",
+        "commands",
+        "groups:history",
+        "groups:read",
+        "im:history",
+        "im:read",
+        "mpim:history",
+        "mpim:read",
+        "users:read"
+      ]
+    }
+  },
+  "settings": {
+    "event_subscriptions": {
+      "request_url": "https://your-app-url.com/slack/events",
+      "bot_events": []
+    },
+    "interactivity": {
+      "is_enabled": false
+    },
+    "org_deploy_enabled": false,
+    "socket_mode_enabled": true,
+    "token_rotation_enabled": false
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "quotastic",
+  "version": "1.0.0",
+  "description": "Quotastic (by Build To Sell B.V.) - A fun Slack bot to store and retrieve memorable quotes from your team",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon index.js"
+  },
+  "keywords": [
+    "slack",
+    "bot",
+    "quotes",
+    "team"
+  ],
+  "author": "Build To Sell B.V.",
+  "license": "MIT",
+  "dependencies": {
+    "@slack/bolt": "^3.13.3",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "sqlite3": "^5.1.6",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  }
+}
