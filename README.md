@@ -221,10 +221,24 @@ The app uses SQLite which works perfectly on Glitch:
 3. Try refreshing Slack (Cmd/Ctrl + R)
 
 ### Common Glitch issues
+- **"node: command not found" or "npm: command not found"**:
+  - The app will auto-install Node.js 18 on first run
+  - If it's stuck, open Terminal ("Tools" > "Terminal") and run:
+    ```bash
+    rm -rf node_modules package-lock.json
+    refresh
+    ```
+  - Wait 1-2 minutes for setup to complete
+  - Check logs for "⚡ Starting Quotastic bot..."
+- **"bad interpreter: Text file busy"**:
+  - Just run: `refresh` in Terminal
+  - This happens when Glitch is updating the file
 - **"SyntaxError: Unexpected identifier" or "import" errors**: 
-  - The app needs Node.js 18. In Glitch terminal run: `nvm install 18 && nvm use 18`
-  - Then refresh: Click "Tools" > "Terminal", type `refresh`
-- **"Error: Cannot find module"**: Click "Tools" > "Terminal", run `enable-pnpm && pnpm install`
+  - The app needs Node.js 18 (auto-installed by glitch-start.sh)
+  - If issues persist: Terminal > `refresh`
+- **"Error: Cannot find module"**: 
+  - Dependencies install automatically
+  - If needed: Terminal > `rm -rf node_modules && refresh`
 - **App sleeping**: This is normal - it wakes instantly when you use a command
 - **Disk space**: Run `rm -f *.log` in Terminal to free space
 
@@ -234,31 +248,56 @@ The app uses SQLite which works perfectly on Glitch:
 - **"Cannot connect to Slack"**: Your SLACK_APP_TOKEN is wrong
 
 ### Slash command not working
-If `/quote` doesn't appear when you type it:
 
-1. **Check Socket Mode is enabled**:
-   - Go to your app settings at api.slack.com
+#### If you see "dispatch_failed" error:
+This means Slack can't connect to your bot. Check these in order:
+
+1. **Is your Glitch app running?**
+   - Go to your Glitch project
+   - Check the logs (Tools > Logs)
+   - Should see "⚡️ Quotastic is running!"
+   - If you see errors, fix those first (especially Node.js version)
+
+2. **Are all 3 tokens in Glitch .env?**
+   - Click on `.env` in Glitch
+   - Verify all three tokens are there:
+     ```
+     SLACK_BOT_TOKEN=xoxb-...
+     SLACK_SIGNING_SECRET=...
+     SLACK_APP_TOKEN=xapp-...
+     ```
+   - No quotes around the values!
+   - No spaces before/after the = sign
+
+3. **Is Socket Mode enabled?**
+   - Go to [api.slack.com/apps](https://api.slack.com/apps) 
+   - Select your app
    - Click "Socket Mode" in sidebar
-   - Make sure it's toggled ON
+   - Must be toggled ON
+   - If it was OFF, turn it ON and wait 30 seconds
 
-2. **Reinstall the app**:
+4. **Check App Token has correct scope**:
+   - Go to "Basic Information" > "App-Level Tokens"
+   - Click on your token name
+   - Must have `connections:write` scope
+   - If not, regenerate with correct scope
+
+5. **Reinstall the app**:
    - Go to "OAuth & Permissions"
    - Click "Reinstall to Workspace"
-   - Authorize again
+   - This refreshes all connections
 
-3. **Check Slash Commands**:
+#### If `/quote` doesn't appear when typing:
+
+1. **Check Slash Commands**:
    - Go to "Slash Commands" in sidebar
    - Verify `/quote` is listed there
    - If not, the manifest didn't apply correctly
 
-4. **Wait and refresh**:
+2. **Wait and refresh**:
    - Slash commands can take 3-5 minutes to propagate
    - Try refreshing Slack (Cmd/Ctrl + R)
    - Try in a different channel or DM
-
-5. **Check app is running**:
-   - In Glitch, check logs show "⚡️ Quotastic is running!"
-   - Look for any connection errors
 
 ## Updating Your Bot on Glitch
 
