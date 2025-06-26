@@ -35,19 +35,26 @@ npm install
 
 ### Step 3: Configure the app
 
-1. Go to "Basic Information" > "App-Level Tokens"
-2. Click "Generate Token and Scopes"
-3. Give the token a name (e.g. "socket-mode")
-4. Add the scope `connections:write`
-5. Click "Generate"
-6. Copy the token (starts with `xapp-`)
+#### Get your tokens:
 
-7. Go to "OAuth & Permissions"
-8. Install the app in your workspace
-9. Copy the "Bot User OAuth Token" (starts with `xoxb-`)
+1. **Signing Secret**
+   - Go to "Basic Information"
+   - Find "Signing Secret" under App Credentials
+   - Click "Show" and copy the secret
 
-10. Go to "Basic Information"
-11. Copy the "Signing Secret"
+2. **Bot Token**
+   - Go to "OAuth & Permissions" in the sidebar
+   - Click "Install to Workspace" button
+   - Authorize the app
+   - Copy the "Bot User OAuth Token" (starts with `xoxb-`)
+
+3. **App Token** (for Socket Mode)
+   - Go to "Basic Information" > "App-Level Tokens"
+   - Click "Generate Token and Scopes"
+   - Give the token a name (e.g. "socket-mode")
+   - Add the scope `connections:write`
+   - Click "Generate"
+   - Copy the token (starts with `xapp-`)
 
 ### Step 4: Environment variables
 
@@ -55,9 +62,14 @@ npm install
 2. Fill in the tokens:
 
 ```env
+# Required Slack tokens
 SLACK_BOT_TOKEN=xoxb-your-bot-token
 SLACK_SIGNING_SECRET=your-signing-secret
 SLACK_APP_TOKEN=xapp-your-app-token
+
+# Optional settings (not needed for Glitch)
+NODE_ENV=development
+PORT=3000
 ```
 
 ### Step 5: Start the app
@@ -78,7 +90,15 @@ npm run dev
 1. Go to [glitch.com](https://glitch.com)
 2. Click "New Project" > "Import from GitHub"
 3. Paste your repository URL
-4. Add environment variables in the Glitch editor
+4. Add environment variables:
+   - Click on the `.env` file in Glitch editor
+   - Add only the required tokens:
+     ```
+     SLACK_BOT_TOKEN=xoxb-your-bot-token
+     SLACK_SIGNING_SECRET=your-signing-secret
+     SLACK_APP_TOKEN=xapp-your-app-token
+     ```
+   - Note: NODE_ENV and PORT are automatically managed by Glitch
 5. Your app runs automatically!
 
 ### Vercel
@@ -331,10 +351,19 @@ For production, you might consider switching to:
 - MySQL (PlanetScale)
 - MongoDB (MongoDB Atlas)
 
+## Important Notes
+
+- **Tokens**: You need exactly 3 tokens from Slack (see Step 3)
+- **Socket Mode**: This bot uses Socket Mode, so no public URL is needed
+- **Environment Variables**:
+  - `NODE_ENV` and `PORT` are optional and not needed for Glitch
+  - Only the Slack tokens are required
+
 ## Troubleshooting
 
 ### Bot not responding
-- Check if all tokens are filled in correctly
+- Check if all tokens are filled in correctly (no extra spaces)
+- Verify the app is installed in your workspace
 - Look at the logs for errors: `npm start`
 - Make sure Socket Mode is enabled in your Slack app settings
 
@@ -345,6 +374,12 @@ For production, you might consider switching to:
 ### Slash command not visible
 - Reinstall the app in your workspace
 - Wait a few minutes for Slack to sync the commands
+- Make sure you used the manifest.json to create the app
+
+### Token errors
+- **"Invalid auth"**: Check your SLACK_BOT_TOKEN
+- **"Signature verification failed"**: Check your SLACK_SIGNING_SECRET
+- **"Cannot connect to Slack"**: Check your SLACK_APP_TOKEN
 
 ## Extensions
 
