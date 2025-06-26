@@ -1,6 +1,8 @@
 # Quotastic (by Build To Sell B.V.)
 
-A fun Slack bot to save your team's best quotes! 💬 Designed to run on Glitch.
+A fun Slack bot to save your team's best quotes! 💬 Free hosting on Replit!
+
+[![Run on Replit](https://replit.com/badge/github/your-repo/quotastic)](https://replit.com/new/github/your-repo/quotastic)
 
 ## Features
 
@@ -17,11 +19,11 @@ A fun Slack bot to save your team's best quotes! 💬 Designed to run on Glitch.
 - All commands work via slash commands - no need to @mention the bot
 - Works in channels, private channels, and direct messages
 
-## Quick Start on Glitch
+## Quick Start on Replit
 
 ### Requirements
 - A Slack workspace where you can install apps
-- A free [Glitch](https://glitch.com) account
+- A free [Replit](https://replit.com) account
 
 ### Step 1: Create a Slack App
 
@@ -75,28 +77,27 @@ The bot needs these OAuth scopes (automatically set by manifest.json):
 - `im:read` - View basic DM info
 - `users:read` - View basic user info
 
-### Step 3: Deploy to Glitch
+### Step 3: Deploy to Replit
 
 1. **Import the project**
-   - Go to [glitch.com](https://glitch.com)
-   - Click "New Project" > "Import from GitHub"
-   - Use this repository URL: `https://github.com/your-username/quotastic`
-   - Or click: [Remix on Glitch](https://glitch.com/edit/#!/import/github/your-username/quotastic)
+   - Go to [replit.com](https://replit.com)
+   - Click "+ Create Repl"
+   - Choose "Import from GitHub"
+   - Paste this repository URL: `https://github.com/your-username/quotastic`
+   - Or use this button: [![Run on Replit](https://replit.com/badge/github/your-username/quotastic)](https://replit.com/new/github/your-username/quotastic)
 
 2. **Add your Slack tokens**
-   - In the Glitch editor, click on `.env` in the file list
-   - Add your three tokens:
-     ```
-     SLACK_BOT_TOKEN=xoxb-your-bot-token
-     SLACK_SIGNING_SECRET=your-signing-secret
-     SLACK_APP_TOKEN=xapp-your-app-token
-     ```
-   - Glitch automatically keeps `.env` private and secure
+   - In Replit, click on "Secrets" (lock icon) in the left sidebar
+   - Add these secrets one by one:
+     - Key: `SLACK_BOT_TOKEN`, Value: `xoxb-your-bot-token`
+     - Key: `SLACK_SIGNING_SECRET`, Value: `your-signing-secret`
+     - Key: `SLACK_APP_TOKEN`, Value: `xapp-your-app-token`
+   - Secrets are encrypted and secure
 
-3. **That's it!**
-   - Glitch automatically installs dependencies and starts your bot
-   - Check the logs by clicking "Tools" > "Logs" at the bottom
-   - Your bot should connect to Slack within seconds
+3. **Start the bot**
+   - Click the big green "Run" button
+   - Watch the console for "⚡️ Quotastic is running!"
+   - Your bot should connect to Slack immediately
 
 ### Step 4: Add the bot to your workspace
 
@@ -146,102 +147,97 @@ The bot needs these OAuth scopes (automatically set by manifest.json):
 - **Weekly recap**: `/quote` to share a random fun moment
 - **Share specific quote**: Check ID with `/quote list`, then share it
 
-## Why Glitch?
+## Why Replit?
 
-- **Free hosting** - No credit card required
-- **Always on** - Glitch keeps your bot running 24/7
-- **Automatic HTTPS** - Secure by default
-- **Easy updates** - Edit code directly in the browser
-- **Private .env** - Tokens are kept secure automatically
-- **No terminal needed** - Everything works in your browser
+- **Free hosting** - Generous free tier
+- **Always on** - Repls stay active longer than Glitch
+- **Built-in database** - SQLite works perfectly
+- **Easy secrets management** - Secure environment variables
+- **Multiplayer editing** - Collaborate with your team
+- **No credit card required** - Start coding immediately
 
-## Glitch-Specific Features
+## Replit-Specific Features
 
-### Automatic Restarts
-Glitch automatically restarts your app when:
-- You edit any file
-- The app crashes
-- Dependencies are updated
+### Automatic Features
+- **Auto-install**: Dependencies install automatically
+- **Auto-restart**: Crashes are handled gracefully
+- **Node.js 18**: Modern JavaScript support built-in
 
 ### Viewing Logs
-1. Click "Tools" at the bottom of the Glitch editor
-2. Select "Logs"
-3. Watch real-time logs of your bot
+- The console shows all logs in real-time
+- Errors appear in red for easy debugging
+- Search logs with Ctrl/Cmd+F
 
-### Debugging
-1. Click "Tools" > "Terminal"
+### Using the Shell
+1. Click "Shell" tab in the console area
 2. Run commands like:
-   - `ls database/` - Check if database exists
+   - `ls database/` - Check database files
    - `cat error.log` - View error logs
-   - `node --version` - Check Node version
+   - `npm list` - Check installed packages
 
-### Keeping Your Bot Awake
-Glitch apps sleep after 5 minutes of inactivity. For a Slack bot using Socket Mode, this isn't a problem because:
-- Socket Mode maintains a persistent connection
-- The bot wakes instantly when commands are used
-- No external pinging service needed
+### Keeping Your Bot Active
+Replit free tier limitations:
+- Repls sleep after ~30 minutes of HTTP inactivity
+- Socket Mode helps - bot stays connected longer
+- For 24/7 uptime, consider Replit's Hacker plan ($7/month)
 
-## Database on Glitch
+## Database on Replit
 
-The app uses SQLite which works perfectly on Glitch:
+The app uses SQLite which works perfectly on Replit:
 - Database is stored in `database/quotes.db`
 - Persists across restarts
-- No configuration needed
+- Stored in Replit's persistent filesystem
 - Automatically created on first run
 
 ### Backing Up Your Quotes
 
-1. In Glitch, click "Tools" > "Terminal"
+1. Click "Shell" tab in the console
 2. Run: `cp database/quotes.db database/backup_$(date +%Y%m%d).db`
-3. Download via: "Tools" > "Import and Export" > "Download Project"
+3. Download files:
+   - Click the three dots menu on any file
+   - Select "Download"
+   - Or use: `zip -r backup.zip database/`
 
-## Important Notes for Glitch
+## Important Notes for Replit
 
-- **Private by default**: Your `.env` file is never visible to others
-- **Automatic HTTPS**: All Glitch apps use HTTPS
-- **Socket Mode**: No webhook URL needed - the bot connects to Slack
-- **Free limits**: Glitch free tier is perfect for team Slack bots
-- **Remixing**: Others can "remix" your public project but won't see your tokens
+- **Secrets are secure**: Use Secrets tab, never commit tokens
+- **Public by default**: Make private with Hacker plan
+- **Socket Mode**: No webhook URL needed - perfect for Replit
+- **Free tier limits**: Great for teams under 50 people
+- **Forking**: Others can fork your repl but won't see secrets
 
-## Troubleshooting on Glitch
+## Troubleshooting on Replit
 
 ### Bot not responding
-1. Check logs: "Tools" > "Logs"
-2. Verify all 3 tokens in `.env` (no quotes or extra spaces)
-3. Click "Tools" > "Terminal" and run: `refresh`
+1. Check the console for errors
+2. Verify all 3 tokens in Secrets (lock icon)
+3. Click "Stop" then "Run" to restart
 4. Make sure the app is installed in your Slack workspace
 
 ### Database errors
-1. Open Terminal: "Tools" > "Terminal"
+1. Open Shell tab
 2. Run: `rm -f database/quotes.db`
-3. The app will auto-restart and create a new database
+3. Click "Stop" then "Run" to restart
 
 ### Slash command not visible
 1. Reinstall the app in your Slack workspace
 2. Wait 3-5 minutes for Slack to sync
 3. Try refreshing Slack (Cmd/Ctrl + R)
 
-### Common Glitch issues
-- **"node: command not found" or "npm: command not found"**:
-  - The app will auto-install Node.js 18 on first run
-  - If it's stuck, open Terminal ("Tools" > "Terminal") and run:
-    ```bash
-    rm -rf node_modules package-lock.json
-    refresh
-    ```
-  - Wait 1-2 minutes for setup to complete
-  - Check logs for "⚡ Starting Quotastic bot..."
-- **"bad interpreter: Text file busy"**:
-  - Just run: `refresh` in Terminal
-  - This happens when Glitch is updating the file
-- **"SyntaxError: Unexpected identifier" or "import" errors**: 
-  - The app needs Node.js 18 (auto-installed by glitch-start.sh)
-  - If issues persist: Terminal > `refresh`
-- **"Error: Cannot find module"**: 
-  - Dependencies install automatically
-  - If needed: Terminal > `rm -rf node_modules && refresh`
-- **App sleeping**: This is normal - it wakes instantly when you use a command
-- **Disk space**: Run `rm -f *.log` in Terminal to free space
+### Common Replit issues
+- **"Cannot find module" errors**:
+  - Click "Shell" tab
+  - Run: `npm install`
+  - Click "Run" again
+- **Bot stops after 30 minutes**:
+  - Normal for free tier
+  - Upgrade to Hacker plan for always-on
+  - Or use UptimeRobot to ping every 20 mins
+- **"Permission denied" errors**:
+  - Run: `chmod +x index.js`
+- **Out of storage space**:
+  - Run: `rm -f *.log error.log combined.log`
+  - Clear old database backups
 
 ### Token errors
 - **"Invalid auth"**: Your SLACK_BOT_TOKEN is wrong
@@ -253,22 +249,19 @@ The app uses SQLite which works perfectly on Glitch:
 #### If you see "dispatch_failed" error:
 This means Slack can't connect to your bot. Check these in order:
 
-1. **Is your Glitch app running?**
-   - Go to your Glitch project
-   - Check the logs (Tools > Logs)
+1. **Is your Replit app running?**
+   - Look at the console output
    - Should see "⚡️ Quotastic is running!"
-   - If you see errors, fix those first (especially Node.js version)
+   - If stopped, click "Run" button
+   - If errors, fix those first
 
-2. **Are all 3 tokens in Glitch .env?**
-   - Click on `.env` in Glitch
-   - Verify all three tokens are there:
-     ```
-     SLACK_BOT_TOKEN=xoxb-...
-     SLACK_SIGNING_SECRET=...
-     SLACK_APP_TOKEN=xapp-...
-     ```
-   - No quotes around the values!
-   - No spaces before/after the = sign
+2. **Are all 3 tokens in Secrets?**
+   - Click "Secrets" (lock icon) in sidebar
+   - Verify all three secrets exist:
+     - `SLACK_BOT_TOKEN` (starts with xoxb-)
+     - `SLACK_SIGNING_SECRET`
+     - `SLACK_APP_TOKEN` (starts with xapp-)
+   - No quotes in the values!
 
 3. **Is Socket Mode enabled?**
    - Go to [api.slack.com/apps](https://api.slack.com/apps) 
@@ -300,31 +293,32 @@ This means Slack can't connect to your bot. Check these in order:
    - Try refreshing Slack (Cmd/Ctrl + R)
    - Try in a different channel or DM
 
-## Updating Your Bot on Glitch
+## Updating Your Bot on Replit
 
 ### Method 1: Direct editing
-1. Make changes directly in the Glitch editor
-2. The bot auto-restarts with your changes
+1. Make changes directly in Replit editor
+2. Click "Run" to restart with changes
 
-### Method 2: Import from GitHub
-1. Push updates to your GitHub repo
-2. In Glitch: "Tools" > "Import and Export" > "Import from GitHub"
-3. Enter your repo URL
+### Method 2: Git sync
+1. Connect your Repl to GitHub
+2. Use version control tab to pull updates
+3. Or in Shell: `git pull origin main`
 
-### Method 3: Terminal
-1. "Tools" > "Terminal"
-2. Run: `git pull origin main`
+### Method 3: Re-import
+1. Create a new Repl from updated GitHub repo
+2. Copy your Secrets to the new Repl
 
-## Making Your Glitch Project
+## Managing Your Replit Project
 
 ### Keep it private
-- By default, others can see your code (but not `.env`)
-- To make fully private: Settings > "Make This Project Private" (requires Glitch subscription)
+- Free Repls are public by default
+- Secrets are always private
+- For private code: Upgrade to Hacker plan
 
 ### Share with team
-1. Click "Share" button
-2. Invite teammates via email
-3. They can edit but can't see `.env` values
+1. Click "Invite" button
+2. Share via link or username
+3. Collaborators can edit but not see Secrets
 
 ## Extensions
 
@@ -338,7 +332,7 @@ Ideas for additional features:
 
 ## Local Development
 
-Want to develop locally before pushing to Glitch?
+Want to develop locally before pushing to Replit?
 
 ```bash
 # Clone the repo
@@ -355,13 +349,38 @@ cp .env.example .env
 # Run locally
 npm run dev
 
-# Push to Glitch when ready
+# Push to GitHub when ready
 git push origin main
+# Then pull in Replit or re-import
 ```
+
+## Alternative Deployment Options
+
+If Replit changes their free tier, here are other free options:
+
+### Option 1: Render.com
+- Free tier includes 750 hours/month
+- Automatic deploys from GitHub
+- Environment variables support
+
+### Option 2: Fly.io
+- Free tier with 3 shared VMs
+- Great for always-on apps
+- Requires credit card (but won't charge)
+
+### Option 3: Local + ngrok
+- Run on your computer
+- Use ngrok for public URL (if needed)
+- 100% free but requires your machine
+
+### Option 4: Oracle Cloud Free Tier
+- Always free VM (24/7)
+- More complex setup
+- Best for long-term hosting
 
 ## Support
 
-- **Glitch Help**: [support.glitch.com](https://support.glitch.com)
+- **Replit Help**: [ask.replit.com](https://ask.replit.com)
 - **Project Issues**: Create an issue on GitHub
 - **Slack API Help**: [api.slack.com/support](https://api.slack.com/support)
 
