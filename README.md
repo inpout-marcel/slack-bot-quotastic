@@ -32,6 +32,8 @@ A fun Slack bot to save your team's best quotes! 💬 Designed to run on Glitch.
 5. Paste the contents of `manifest.json`
 6. Click "Create"
 
+**Note**: The manifest uses Socket Mode, so you don't need any public URLs. Everything runs through a secure websocket connection.
+
 ### Step 2: Configure the app
 
 #### Enable Socket Mode (IMPORTANT!)
@@ -219,6 +221,9 @@ The app uses SQLite which works perfectly on Glitch:
 3. Try refreshing Slack (Cmd/Ctrl + R)
 
 ### Common Glitch issues
+- **"SyntaxError: Unexpected identifier" or "import" errors**: 
+  - The app needs Node.js 18. In Glitch terminal run: `nvm install 18 && nvm use 18`
+  - Then refresh: Click "Tools" > "Terminal", type `refresh`
 - **"Error: Cannot find module"**: Click "Tools" > "Terminal", run `enable-pnpm && pnpm install`
 - **App sleeping**: This is normal - it wakes instantly when you use a command
 - **Disk space**: Run `rm -f *.log` in Terminal to free space
