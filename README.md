@@ -1,6 +1,6 @@
 # Quotastic (by Build To Sell B.V.)
 
-A fun Slack bot to save your team's best quotes! 💬
+A fun Slack bot to save your team's best quotes! 💬 Designed to run on Glitch.
 
 ## Features
 
@@ -9,22 +9,13 @@ A fun Slack bot to save your team's best quotes! 💬
 - **`/quote list`** - View the last 5 quotes
 - **`/quote delete [ID]`** - Delete a quote (only for the person who added it or the person quoted)
 
-## Local Installation
+## Quick Start on Glitch
 
 ### Requirements
-- Node.js (v14 or higher)
-- npm or yarn
 - A Slack workspace where you can install apps
+- A free [Glitch](https://glitch.com) account
 
-### Step 1: Clone the project
-
-```bash
-git clone <repository-url>
-cd quotastic
-npm install
-```
-
-### Step 2: Create a Slack App
+### Step 1: Create a Slack App
 
 1. Go to [api.slack.com/apps](https://api.slack.com/apps)
 2. Click "Create New App"
@@ -33,7 +24,7 @@ npm install
 5. Paste the contents of `manifest.json`
 6. Click "Create"
 
-### Step 3: Configure the app
+### Step 2: Configure the app
 
 #### Get your tokens:
 
@@ -56,344 +47,185 @@ npm install
    - Click "Generate"
    - Copy the token (starts with `xapp-`)
 
-### Step 4: Environment variables
+### Step 3: Deploy to Glitch
 
-1. Copy `.env.example` to `.env`
-2. Fill in the tokens:
+1. **Import the project**
+   - Go to [glitch.com](https://glitch.com)
+   - Click "New Project" > "Import from GitHub"
+   - Use this repository URL: `https://github.com/your-username/quotastic`
+   - Or click: [Remix on Glitch](https://glitch.com/edit/#!/import/github/your-username/quotastic)
 
-```env
-# Required Slack tokens
-SLACK_BOT_TOKEN=xoxb-your-bot-token
-SLACK_SIGNING_SECRET=your-signing-secret
-SLACK_APP_TOKEN=xapp-your-app-token
-
-# Optional settings (not needed for Glitch)
-NODE_ENV=development
-PORT=3000
-```
-
-### Step 5: Start the app
-
-```bash
-npm start
-```
-
-For development with auto-reload:
-```bash
-npm run dev
-```
-
-## Deployment Options
-
-### Glitch
-
-1. Go to [glitch.com](https://glitch.com)
-2. Click "New Project" > "Import from GitHub"
-3. Paste your repository URL
-4. Add environment variables:
-   - Click on the `.env` file in Glitch editor
-   - Add only the required tokens:
+2. **Add your Slack tokens**
+   - In the Glitch editor, click on `.env` in the file list
+   - Add your three tokens:
      ```
      SLACK_BOT_TOKEN=xoxb-your-bot-token
      SLACK_SIGNING_SECRET=your-signing-secret
      SLACK_APP_TOKEN=xapp-your-app-token
      ```
-   - Note: NODE_ENV and PORT are automatically managed by Glitch
-5. Your app runs automatically!
+   - Glitch automatically keeps `.env` private and secure
 
-### Vercel
+3. **That's it!**
+   - Glitch automatically installs dependencies and starts your bot
+   - Check the logs by clicking "Tools" > "Logs" at the bottom
+   - Your bot should connect to Slack within seconds
 
-1. Install Vercel CLI: `npm i -g vercel`
-2. Run `vercel` in your project directory
-3. Follow the prompts
-4. Add environment variables via the Vercel dashboard
+### Step 4: Test your bot
 
-### Heroku
+1. Go to any Slack channel
+2. Type `/quote` to see the help menu
+3. Try `/quote store This is my first quote!`
+4. Use `/quote list` to see your quotes
 
-1. Create a new Heroku app
-2. Connect to your GitHub repository
-3. Add environment variables via Settings > Config Vars
-4. Deploy!
+## Why Glitch?
 
-### Railway
+- **Free hosting** - No credit card required
+- **Always on** - Glitch keeps your bot running 24/7
+- **Automatic HTTPS** - Secure by default
+- **Easy updates** - Edit code directly in the browser
+- **Private .env** - Tokens are kept secure automatically
+- **No terminal needed** - Everything works in your browser
 
-1. Go to [railway.app](https://railway.app)
-2. Click "New Project"
-3. Choose "Deploy from GitHub repo"
-4. Select your repository
-5. Add environment variables
-6. Click "Deploy"
+## Glitch-Specific Features
 
-### Ubuntu 24 Server (Own VPS/Server)
+### Automatic Restarts
+Glitch automatically restarts your app when:
+- You edit any file
+- The app crashes
+- Dependencies are updated
 
-#### Requirements
-- Ubuntu 24.04 LTS server
-- SSH access to your server
-- Domain name (optional, for HTTPS)
+### Viewing Logs
+1. Click "Tools" at the bottom of the Glitch editor
+2. Select "Logs"
+3. Watch real-time logs of your bot
 
-#### Step 1: Prepare the server
+### Debugging
+1. Click "Tools" > "Terminal"
+2. Run commands like:
+   - `ls database/` - Check if database exists
+   - `cat error.log` - View error logs
+   - `node --version` - Check Node version
+
+### Keeping Your Bot Awake
+Glitch apps sleep after 5 minutes of inactivity. For a Slack bot using Socket Mode, this isn't a problem because:
+- Socket Mode maintains a persistent connection
+- The bot wakes instantly when commands are used
+- No external pinging service needed
+
+## Database on Glitch
+
+The app uses SQLite which works perfectly on Glitch:
+- Database is stored in `database/quotes.db`
+- Persists across restarts
+- No configuration needed
+- Automatically created on first run
+
+### Backing Up Your Quotes
+
+1. In Glitch, click "Tools" > "Terminal"
+2. Run: `cp database/quotes.db database/backup_$(date +%Y%m%d).db`
+3. Download via: "Tools" > "Import and Export" > "Download Project"
+
+## Important Notes for Glitch
+
+- **Private by default**: Your `.env` file is never visible to others
+- **Automatic HTTPS**: All Glitch apps use HTTPS
+- **Socket Mode**: No webhook URL needed - the bot connects to Slack
+- **Free limits**: Glitch free tier is perfect for team Slack bots
+- **Remixing**: Others can "remix" your public project but won't see your tokens
+
+## Troubleshooting on Glitch
+
+### Bot not responding
+1. Check logs: "Tools" > "Logs"
+2. Verify all 3 tokens in `.env` (no quotes or extra spaces)
+3. Click "Tools" > "Terminal" and run: `refresh`
+4. Make sure the app is installed in your Slack workspace
+
+### Database errors
+1. Open Terminal: "Tools" > "Terminal"
+2. Run: `rm -f database/quotes.db`
+3. The app will auto-restart and create a new database
+
+### Slash command not visible
+1. Reinstall the app in your Slack workspace
+2. Wait 3-5 minutes for Slack to sync
+3. Try refreshing Slack (Cmd/Ctrl + R)
+
+### Common Glitch issues
+- **"Error: Cannot find module"**: Click "Tools" > "Terminal", run `enable-pnpm && pnpm install`
+- **App sleeping**: This is normal - it wakes instantly when you use a command
+- **Disk space**: Run `rm -f *.log` in Terminal to free space
+
+### Token errors
+- **"Invalid auth"**: Your SLACK_BOT_TOKEN is wrong
+- **"Signature verification failed"**: Your SLACK_SIGNING_SECRET is wrong  
+- **"Cannot connect to Slack"**: Your SLACK_APP_TOKEN is wrong
+
+## Updating Your Bot on Glitch
+
+### Method 1: Direct editing
+1. Make changes directly in the Glitch editor
+2. The bot auto-restarts with your changes
+
+### Method 2: Import from GitHub
+1. Push updates to your GitHub repo
+2. In Glitch: "Tools" > "Import and Export" > "Import from GitHub"
+3. Enter your repo URL
+
+### Method 3: Terminal
+1. "Tools" > "Terminal"
+2. Run: `git pull origin main`
+
+## Making Your Glitch Project
+
+### Keep it private
+- By default, others can see your code (but not `.env`)
+- To make fully private: Settings > "Make This Project Private" (requires Glitch subscription)
+
+### Share with team
+1. Click "Share" button
+2. Invite teammates via email
+3. They can edit but can't see `.env` values
+
+## Extensions
+
+Ideas for additional features:
+- Search quotes by keyword
+- Quote statistics per user  
+- Export functionality
+- Scheduled random quotes
+- Reactions to quotes
+- Quote categories/tags
+
+## Local Development
+
+Want to develop locally before pushing to Glitch?
 
 ```bash
-# Update system
-sudo apt update && sudo apt upgrade -y
-
-# Install Node.js 20.x
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt-get install -y nodejs
-
-# Install build tools
-sudo apt-get install -y build-essential
-
-# Install PM2 (process manager)
-sudo npm install -g pm2
-
-# Create a user for the app (optional but recommended)
-sudo useradd -m -s /bin/bash quotastic
-sudo usermod -aG sudo quotastic
-```
-
-#### Step 2: Clone and install the app
-
-```bash
-# Login as quotastic user (or use your own user)
-sudo su - quotastic
-
-# Clone the repository
-git clone <repository-url> /home/quotastic/app
-cd /home/quotastic/app
+# Clone the repo
+git clone <repository-url>
+cd quotastic
 
 # Install dependencies
 npm install
 
 # Create .env file
 cp .env.example .env
-nano .env  # Fill in your Slack tokens here
+# Add your tokens to .env
+
+# Run locally
+npm run dev
+
+# Push to Glitch when ready
+git push origin main
 ```
-
-#### Step 3: Start the app with PM2
-
-```bash
-# Start the app
-pm2 start index.js --name quotastic
-
-# Save PM2 configuration
-pm2 save
-
-# Make PM2 start automatically on reboot
-pm2 startup systemd
-# Follow the instructions PM2 gives (copy and paste the sudo command)
-```
-
-#### Step 4: Nginx reverse proxy (optional, for HTTPS)
-
-If you have a domain name and want to use HTTPS:
-
-```bash
-# Install Nginx
-sudo apt install -y nginx
-
-# Install Certbot for SSL
-sudo apt install -y certbot python3-certbot-nginx
-
-# Create Nginx configuration
-sudo nano /etc/nginx/sites-available/quotastic
-```
-
-Paste this configuration:
-
-```nginx
-server {
-    listen 80;
-    server_name your-domain.com;
-
-    location / {
-        proxy_pass http://localhost:3000;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection 'upgrade';
-        proxy_set_header Host $host;
-        proxy_cache_bypass $http_upgrade;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-```
-
-```bash
-# Enable the site
-sudo ln -s /etc/nginx/sites-available/quotastic /etc/nginx/sites-enabled/
-sudo nginx -t
-sudo systemctl restart nginx
-
-# Request SSL certificate
-sudo certbot --nginx -d your-domain.com
-```
-
-#### Step 5: Firewall configuration
-
-```bash
-# UFW firewall setup
-sudo ufw allow 22/tcp    # SSH
-sudo ufw allow 80/tcp    # HTTP
-sudo ufw allow 443/tcp   # HTTPS
-sudo ufw enable
-```
-
-#### Management commands
-
-```bash
-# Check status
-pm2 status
-
-# View logs
-pm2 logs quotastic
-
-# Restart
-pm2 restart quotastic
-
-# Stop
-pm2 stop quotastic
-
-# Install updates
-cd /home/quotastic/app
-git pull
-npm install
-pm2 restart quotastic
-```
-
-#### Monitoring and logs
-
-```bash
-# Real-time logs
-pm2 logs quotastic --lines 100
-
-# CPU/Memory usage
-pm2 monit
-
-# View error logs
-tail -f /home/quotastic/app/error.log
-
-# System logs
-sudo journalctl -u pm2-quotastic -n 50 -f
-```
-
-#### Backup strategy
-
-```bash
-# Create backup script
-nano /home/quotastic/backup.sh
-```
-
-```bash
-#!/bin/bash
-BACKUP_DIR="/home/quotastic/backups"
-DATE=$(date +%Y%m%d_%H%M%S)
-
-mkdir -p $BACKUP_DIR
-cp /home/quotastic/app/database/quotes.db "$BACKUP_DIR/quotes_$DATE.db"
-
-# Keep only last 7 days
-find $BACKUP_DIR -name "quotes_*.db" -mtime +7 -delete
-```
-
-```bash
-# Make executable and add to crontab
-chmod +x /home/quotastic/backup.sh
-crontab -e
-# Add: 0 2 * * * /home/quotastic/backup.sh
-```
-
-#### Alternative: Systemd service (without PM2)
-
-If you prefer to use systemd instead of PM2:
-
-```bash
-# Create service file
-sudo nano /etc/systemd/system/quotastic.service
-```
-
-```ini
-[Unit]
-Description=Quotastic Slack Bot
-After=network.target
-
-[Service]
-Type=simple
-User=quotastic
-WorkingDirectory=/home/quotastic/app
-ExecStart=/usr/bin/node /home/quotastic/app/index.js
-Restart=on-failure
-RestartSec=10
-StandardOutput=syslog
-StandardError=syslog
-SyslogIdentifier=quotastic
-Environment=NODE_ENV=production
-
-[Install]
-WantedBy=multi-user.target
-```
-
-```bash
-# Start service
-sudo systemctl daemon-reload
-sudo systemctl enable quotastic
-sudo systemctl start quotastic
-sudo systemctl status quotastic
-```
-
-## Database
-
-The app uses SQLite for local storage. The database is automatically created in `database/quotes.db`.
-
-For production, you might consider switching to:
-- PostgreSQL (Heroku, Railway)
-- MySQL (PlanetScale)
-- MongoDB (MongoDB Atlas)
-
-## Important Notes
-
-- **Tokens**: You need exactly 3 tokens from Slack (see Step 3)
-- **Socket Mode**: This bot uses Socket Mode, so no public URL is needed
-- **Environment Variables**:
-  - `NODE_ENV` and `PORT` are optional and not needed for Glitch
-  - Only the Slack tokens are required
-
-## Troubleshooting
-
-### Bot not responding
-- Check if all tokens are filled in correctly (no extra spaces)
-- Verify the app is installed in your workspace
-- Look at the logs for errors: `npm start`
-- Make sure Socket Mode is enabled in your Slack app settings
-
-### Database errors
-- Delete `database/quotes.db` and restart the app
-- Check if you have write permissions in the database directory
-
-### Slash command not visible
-- Reinstall the app in your workspace
-- Wait a few minutes for Slack to sync the commands
-- Make sure you used the manifest.json to create the app
-
-### Token errors
-- **"Invalid auth"**: Check your SLACK_BOT_TOKEN
-- **"Signature verification failed"**: Check your SLACK_SIGNING_SECRET
-- **"Cannot connect to Slack"**: Check your SLACK_APP_TOKEN
-
-## Extensions
-
-Ideas for additional features:
-- Search quotes by keyword
-- Quote statistics per user
-- Export functionality
-- Scheduled random quotes
-- Reactions to quotes
-- Quote categories/tags
 
 ## Support
 
-For questions or issues, create an issue on GitHub!
+- **Glitch Help**: [support.glitch.com](https://support.glitch.com)
+- **Project Issues**: Create an issue on GitHub
+- **Slack API Help**: [api.slack.com/support](https://api.slack.com/support)
 
 ---
 
