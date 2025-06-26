@@ -14,7 +14,7 @@ class QuoteController {
       
       await respond({
         response_type: 'in_channel',
-        text: `✅ Quote opgeslagen!`,
+        text: `✅ Quote saved!`,
         attachments: [{
           color: 'good',
           fields: [
@@ -24,12 +24,17 @@ class QuoteController {
               short: false
             },
             {
-              title: 'Door',
+              title: 'ID',
+              value: `#${quoteId}`,
+              short: true
+            },
+            {
+              title: 'By',
               value: command.user_name,
               short: true
             },
             {
-              title: 'Kanaal',
+              title: 'Channel',
               value: `#${command.channel_name}`,
               short: true
             }
@@ -43,7 +48,7 @@ class QuoteController {
       logger.info(`Quote stored: ID ${quoteId}`);
     } catch (error) {
       logger.error('Error storing quote:', error);
-      await respond('Er ging iets mis bij het opslaan van de quote.');
+      await respond('Something went wrong while saving the quote.');
     }
   }
 
@@ -52,12 +57,12 @@ class QuoteController {
       const quote = await db.getRandomQuote();
       
       if (!quote) {
-        await respond('Er zijn nog geen quotes opgeslagen. Gebruik `/quote store [tekst]` om de eerste toe te voegen!');
+        await respond('No quotes saved yet. Use `/quote add [text]` to add the first one!');
         return;
       }
       
       const date = new Date(quote.timestamp);
-      const formattedDate = date.toLocaleDateString('nl-NL', {
+      const formattedDate = date.toLocaleDateString('en-US', {
         day: 'numeric',
         month: 'long',
         year: 'numeric'
@@ -65,7 +70,7 @@ class QuoteController {
       
       await respond({
         response_type: 'in_channel',
-        text: `🎲 Willekeurige quote:`,
+        text: `🎲 Random quote:`,
         attachments: [{
           color: '#FF6B6B',
           fields: [
@@ -75,17 +80,22 @@ class QuoteController {
               short: false
             },
             {
-              title: 'Gezegd door',
+              title: 'ID',
+              value: `#${quote.id}`,
+              short: true
+            },
+            {
+              title: 'Said by',
               value: quote.author,
               short: true
             },
             {
-              title: 'Datum',
+              title: 'Date',
               value: formattedDate,
               short: true
             },
             {
-              title: 'Kanaal',
+              title: 'Channel',
               value: `#${quote.channel}`,
               short: true
             }
@@ -97,7 +107,7 @@ class QuoteController {
       });
     } catch (error) {
       logger.error('Error getting random quote:', error);
-      await respond('Er ging iets mis bij het ophalen van een quote.');
+      await respond('Something went wrong while fetching a quote.');
     }
   }
 
@@ -107,13 +117,13 @@ class QuoteController {
       const totalCount = await db.getQuoteCount();
       
       if (quotes.length === 0) {
-        await respond('Er zijn nog geen quotes opgeslagen. Gebruik `/quote store [tekst]` om de eerste toe te voegen!');
+        await respond('No quotes saved yet. Use `/quote add [text]` to add the first one!');
         return;
       }
       
       const attachments = quotes.map((quote, index) => {
         const date = new Date(quote.timestamp);
-        const formattedDate = date.toLocaleDateString('nl-NL', {
+        const formattedDate = date.toLocaleDateString('en-US', {
           day: 'numeric',
           month: 'short',
           hour: '2-digit',
@@ -124,7 +134,7 @@ class QuoteController {
           color: index === 0 ? '#4A90E2' : '#E8E8E8',
           fields: [
             {
-              title: `${index + 1}. "${quote.text}" (ID: ${quote.id})`,
+              title: `${index + 1}. "${quote.text}" (ID: #${quote.id})`,
               value: `_${quote.author} in #${quote.channel} - ${formattedDate}_`,
               short: false
             }
@@ -134,12 +144,12 @@ class QuoteController {
       
       await respond({
         response_type: 'ephemeral',
-        text: `📚 Laatste ${quotes.length} quotes (van ${totalCount} totaal):`,
+        text: `📚 Latest ${quotes.length} quotes (of ${totalCount} total):`,
         attachments: [
           ...attachments,
           {
             color: '#36a64f',
-            text: `_Gebruik \`/quote random\` voor een willekeurige quote_\n_Gebruik \`/quote delete [ID]\` om een quote te verwijderen_`,
+            text: `_Use \`/quote\` or \`/quote random\` for a random quote_\n_Use \`/quote delete [ID]\` to delete a quote_`,
             footer: 'Quotastic (by Build To Sell B.V.)',
             footer_icon: '📝',
             ts: Math.floor(Date.now() / 1000)
@@ -148,7 +158,7 @@ class QuoteController {
       });
     } catch (error) {
       logger.error('Error listing quotes:', error);
-      await respond('Er ging iets mis bij het ophalen van de quotes.');
+      await respond('Something went wrong while fetching quotes.');
     }
   }
 
@@ -159,7 +169,7 @@ class QuoteController {
       if (!quote) {
         await respond({
           response_type: 'ephemeral',
-          text: `❌ Quote met ID ${quoteId} bestaat niet.`
+          text: `❌ Quote with ID #${quoteId} does not exist.`
         });
         return;
       }
@@ -170,7 +180,7 @@ class QuoteController {
       if (!canDelete) {
         await respond({
           response_type: 'ephemeral',
-          text: `❌ Je hebt geen rechten om deze quote te verwijderen. Alleen degene die de quote heeft toegevoegd (${quote.stored_by}) of degene die in de quote staat (${quote.author}) kan deze verwijderen.`
+          text: `❌ You don't have permission to delete this quote. Only the person who added it (${quote.stored_by}) or the person quoted (${quote.author}) can delete it.`
         });
         return;
       }
@@ -180,17 +190,22 @@ class QuoteController {
       if (deleted) {
         await respond({
           response_type: 'in_channel',
-          text: `🗑️ Quote verwijderd`,
+          text: `🗑️ Quote deleted`,
           attachments: [{
             color: 'warning',
             fields: [
               {
-                title: 'Verwijderde quote',
+                title: 'Deleted quote',
                 value: `"${quote.text}"`,
                 short: false
               },
               {
-                title: 'Door',
+                title: 'ID',
+                value: `#${quoteId}`,
+                short: true
+              },
+              {
+                title: 'Deleted by',
                 value: command.user_name,
                 short: true
               }
@@ -205,12 +220,12 @@ class QuoteController {
       } else {
         await respond({
           response_type: 'ephemeral',
-          text: `❌ Er ging iets mis bij het verwijderen van de quote.`
+          text: `❌ Something went wrong while deleting the quote.`
         });
       }
     } catch (error) {
       logger.error('Error deleting quote:', error);
-      await respond('Er ging iets mis bij het verwijderen van de quote.');
+      await respond('Something went wrong while deleting the quote.');
     }
   }
 }

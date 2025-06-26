@@ -1,9 +1,9 @@
 {
   "display_information": {
     "name": "Quotastic",
-    "description": "Sla de leukste quotes van je team op! (by Build To Sell B.V.)",
+    "description": "Save your team's best quotes! (by Build To Sell B.V.)",
     "background_color": "#FF6B6B",
-    "long_description": "Quotastic is een leuke Slack bot die het makkelijk maakt om grappige, inspirerende of bijzondere uitspraken van teamleden op te slaan en terug te halen. Perfect voor het vastleggen van die onvergetelijke momenten tijdens meetings, brainstorms of gewoon tussendoor!"
+    "long_description": "Quotastic is a fun Slack bot that makes it easy to save funny, inspiring, or memorable quotes from team members. Perfect for capturing those unforgettable moments during meetings, brainstorms, or casual conversations!"
   },
   "features": {
     "app_home": {
@@ -18,8 +18,8 @@
     "slash_commands": [
       {
         "command": "/quote",
-        "description": "Beheer quotes van je team",
-        "usage_hint": "store [tekst] | random | list",
+        "description": "Manage team quotes",
+        "usage_hint": "[blank for random] | add [text] | list | delete [id]",
         "should_escape": false
       }
     ]

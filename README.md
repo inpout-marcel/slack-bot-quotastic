@@ -5,11 +5,11 @@ A fun Slack bot to save your team's best quotes! 💬 Designed to run on Glitch.
 ## Features
 
 ### Commands
-- **`/quote store [text]`** - Save a new quote
-- **`/quote random`** - Get a random quote  
+- **`/quote`** - Show a random quote (default action)
+- **`/quote add [text]`** - Save a new quote
+- **`/quote random`** - Show a random quote  
 - **`/quote list`** - View the last 5 quotes with their IDs
 - **`/quote delete [ID]`** - Delete a quote (only allowed for the person who added it or the person quoted)
-- **`/quote`** - Show help menu
 
 ### How it works
 - Quotes are stored with the author's name, who saved it, timestamp, and channel
@@ -114,11 +114,11 @@ The bot needs these OAuth scopes (automatically set by manifest.json):
 
 1. **First test** - Type `/quote` anywhere to see the help menu
 
-2. **Store a quote**:
+2. **Add a quote**:
    ```
-   /quote store Just shipped an awesome feature!
+   /quote add Just shipped an awesome feature!
    ```
-   The bot will confirm the quote was saved and show who said it
+   The bot will confirm the quote was saved and show who said it with its ID
 
 3. **View recent quotes**:
    ```
@@ -140,10 +140,11 @@ The bot needs these OAuth scopes (automatically set by manifest.json):
 
 ### Usage Examples
 
-- **During standup**: `/quote store "I broke production but fixed it in 5 minutes"`
-- **Team wins**: `/quote store "We just hit 1000 users!"`  
-- **Funny moments**: `/quote store "Is it DNS? It's always DNS"`
-- **Weekly recap**: `/quote random` to share a fun moment
+- **During standup**: `/quote add I broke production but fixed it in 5 minutes`
+- **Team wins**: `/quote add We just hit 1000 users!`  
+- **Funny moments**: `/quote add Is it DNS? It's always DNS`
+- **Weekly recap**: `/quote` to share a random fun moment
+- **Share specific quote**: Check ID with `/quote list`, then share it
 
 ## Why Glitch?
 
