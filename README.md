@@ -4,10 +4,18 @@ A fun Slack bot to save your team's best quotes! 💬 Designed to run on Glitch.
 
 ## Features
 
+### Commands
 - **`/quote store [text]`** - Save a new quote
-- **`/quote random`** - Get a random quote
-- **`/quote list`** - View the last 5 quotes
-- **`/quote delete [ID]`** - Delete a quote (only for the person who added it or the person quoted)
+- **`/quote random`** - Get a random quote  
+- **`/quote list`** - View the last 5 quotes with their IDs
+- **`/quote delete [ID]`** - Delete a quote (only allowed for the person who added it or the person quoted)
+- **`/quote`** - Show help menu
+
+### How it works
+- Quotes are stored with the author's name, who saved it, timestamp, and channel
+- Delete permissions ensure quotes can only be removed by relevant people
+- All commands work via slash commands - no need to @mention the bot
+- Works in channels, private channels, and direct messages
 
 ## Quick Start on Glitch
 
@@ -26,6 +34,11 @@ A fun Slack bot to save your team's best quotes! 💬 Designed to run on Glitch.
 
 ### Step 2: Configure the app
 
+#### Enable Socket Mode (IMPORTANT!)
+1. Go to "Socket Mode" in the sidebar
+2. Toggle "Enable Socket Mode" to ON
+3. You'll be prompted to create an app token if you haven't already
+
 #### Get your tokens:
 
 1. **Signing Secret**
@@ -36,7 +49,7 @@ A fun Slack bot to save your team's best quotes! 💬 Designed to run on Glitch.
 2. **Bot Token**
    - Go to "OAuth & Permissions" in the sidebar
    - Click "Install to Workspace" button
-   - Authorize the app
+   - Authorize the app (you'll see the permissions it needs)
    - Copy the "Bot User OAuth Token" (starts with `xoxb-`)
 
 3. **App Token** (for Socket Mode)
@@ -46,6 +59,19 @@ A fun Slack bot to save your team's best quotes! 💬 Designed to run on Glitch.
    - Add the scope `connections:write`
    - Click "Generate"
    - Copy the token (starts with `xapp-`)
+
+#### Required Permissions
+
+The bot needs these OAuth scopes (automatically set by manifest.json):
+- `channels:history` - Read messages in public channels
+- `channels:read` - View basic channel info
+- `chat:write` - Post messages
+- `commands` - Use slash commands
+- `groups:history` - Read messages in private channels
+- `groups:read` - View basic private channel info
+- `im:history` - Read direct messages
+- `im:read` - View basic DM info
+- `users:read` - View basic user info
 
 ### Step 3: Deploy to Glitch
 
@@ -70,12 +96,52 @@ A fun Slack bot to save your team's best quotes! 💬 Designed to run on Glitch.
    - Check the logs by clicking "Tools" > "Logs" at the bottom
    - Your bot should connect to Slack within seconds
 
-### Step 4: Test your bot
+### Step 4: Add the bot to your workspace
 
-1. Go to any Slack channel
-2. Type `/quote` to see the help menu
-3. Try `/quote store This is my first quote!`
-4. Use `/quote list` to see your quotes
+1. **Add to channels** (optional - slash commands work everywhere):
+   - Type `@Quotastic` in any channel
+   - Click "Add to Channel" when prompted
+   - Or: Channel settings → Integrations → Add App → Select Quotastic
+
+2. **Using the bot**:
+   - Slash commands work in any channel or DM
+   - You don't need to invite the bot first
+   - Commands are available workspace-wide immediately
+
+### Step 5: Test your bot
+
+1. **First test** - Type `/quote` anywhere to see the help menu
+
+2. **Store a quote**:
+   ```
+   /quote store Just shipped an awesome feature!
+   ```
+   The bot will confirm the quote was saved and show who said it
+
+3. **View recent quotes**:
+   ```
+   /quote list
+   ```
+   Shows the last 5 quotes with their IDs (only visible to you)
+
+4. **Get a random quote**:
+   ```
+   /quote random
+   ```
+   Posts a random quote for everyone to see
+
+5. **Delete a quote**:
+   ```
+   /quote delete 1
+   ```
+   Only works if you added the quote or you're the person quoted
+
+### Usage Examples
+
+- **During standup**: `/quote store "I broke production but fixed it in 5 minutes"`
+- **Team wins**: `/quote store "We just hit 1000 users!"`  
+- **Funny moments**: `/quote store "Is it DNS? It's always DNS"`
+- **Weekly recap**: `/quote random` to share a fun moment
 
 ## Why Glitch?
 
@@ -161,6 +227,33 @@ The app uses SQLite which works perfectly on Glitch:
 - **"Invalid auth"**: Your SLACK_BOT_TOKEN is wrong
 - **"Signature verification failed"**: Your SLACK_SIGNING_SECRET is wrong  
 - **"Cannot connect to Slack"**: Your SLACK_APP_TOKEN is wrong
+
+### Slash command not working
+If `/quote` doesn't appear when you type it:
+
+1. **Check Socket Mode is enabled**:
+   - Go to your app settings at api.slack.com
+   - Click "Socket Mode" in sidebar
+   - Make sure it's toggled ON
+
+2. **Reinstall the app**:
+   - Go to "OAuth & Permissions"
+   - Click "Reinstall to Workspace"
+   - Authorize again
+
+3. **Check Slash Commands**:
+   - Go to "Slash Commands" in sidebar
+   - Verify `/quote` is listed there
+   - If not, the manifest didn't apply correctly
+
+4. **Wait and refresh**:
+   - Slash commands can take 3-5 minutes to propagate
+   - Try refreshing Slack (Cmd/Ctrl + R)
+   - Try in a different channel or DM
+
+5. **Check app is running**:
+   - In Glitch, check logs show "⚡️ Quotastic is running!"
+   - Look for any connection errors
 
 ## Updating Your Bot on Glitch
 
